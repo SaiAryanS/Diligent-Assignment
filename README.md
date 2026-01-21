@@ -2,7 +2,7 @@
 
 A personal AI assistant powered by a **self-hosted LLM** (via LM Studio) with **Pinecone vector database** for knowledge retrieval and a modern **chatbot UI**.
 
-![Jarvis AI Assistant](screenshot.png)
+![Jarvis AI Assistant](image.png)
 
 ---
 
@@ -261,19 +261,4 @@ Content-Type: application/json
 
 ---
 
-## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## 🙏 Acknowledgments
-
-- [LM Studio](https://lmstudio.ai/) - Local LLM inference
-- [Pinecone](https://www.pinecone.io/) - Vector database
-- [Sentence-Transformers](https://www.sbert.net/) - Text embeddings
-- [Flask](https://flask.palletsprojects.com/) - Web framework
-
----
-
-**Built with ❤️ for the Diligent "Code Meets Co-Pilot" Workshop**
