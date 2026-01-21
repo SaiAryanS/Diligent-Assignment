@@ -36,6 +36,10 @@ def health_check():
     llm_status = llm_client.is_available()
     vector_db_status = vector_db.is_configured()
     
+    # Debug output
+    print(f"[API] health_check: vector_db.index = {vector_db.index}", flush=True)
+    print(f"[API] health_check: is_configured = {vector_db_status}", flush=True)
+    
     return jsonify({
         "status": "ok" if llm_status else "degraded",
         "services": {
@@ -119,6 +123,10 @@ def add_knowledge():
     
     if not data or 'text' not in data:
         return jsonify({"error": "Text is required"}), 400
+    
+    # Debug: check vector_db state
+    print(f"[API] add_knowledge called, vector_db.index = {vector_db.index}", flush=True)
+    print(f"[API] is_configured = {vector_db.is_configured()}", flush=True)
     
     if not vector_db.is_configured():
         return jsonify({
