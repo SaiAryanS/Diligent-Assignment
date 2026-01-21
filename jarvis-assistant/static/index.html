@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jarvis - AI Assistant</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
+                        <path d="M2 12h20"/>
+                    </svg>
+                    <span>Jarvis</span>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <button class="nav-btn active" onclick="showChat()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                    </svg>
+                    Chat
+                </button>
+                <button class="nav-btn" onclick="showKnowledge()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                    </svg>
+                    Knowledge
+                </button>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="status-indicator" id="status-indicator">
+                    <span class="status-dot"></span>
+                    <span class="status-text">Checking...</span>
+                </div>
+                <button class="clear-btn" onclick="clearConversation()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="3,6 5,6 21,6"/>
+                        <path d="M19,6v14a2,2,0,0,1-2,2H7a2,2,0,0,1-2-2V6M8,6V4a2,2,0,0,1,2-2h4a2,2,0,0,1,2,2V6"/>
+                    </svg>
+                    Clear Chat
+                </button>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Chat View -->
+            <div class="chat-view" id="chat-view">
+                <div class="chat-container" id="chat-container">
+                    <div class="welcome-message" id="welcome-message">
+                        <div class="welcome-icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
+                                <path d="M2 12h20"/>
+                            </svg>
+                        </div>
+                        <h1>Hello, I'm Jarvis</h1>
+                        <p>Your personal AI assistant. How can I help you today?</p>
+                        <div class="suggestion-chips">
+                            <button class="chip" onclick="sendSuggestion('What can you help me with?')">What can you help me with?</button>
+                            <button class="chip" onclick="sendSuggestion('Tell me about yourself')">Tell me about yourself</button>
+                            <button class="chip" onclick="sendSuggestion('How does this work?')">How does this work?</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="input-container">
+                    <div class="input-wrapper">
+                        <textarea 
+                            id="message-input" 
+                            placeholder="Type your message..." 
+                            rows="1"
+                            onkeydown="handleKeyDown(event)"
+                            oninput="autoResize(this)"
+                        ></textarea>
+                        <button class="send-btn" onclick="sendMessage()" id="send-btn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="22" y1="2" x2="11" y2="13"/>
+                                <polygon points="22,2 15,22 11,13 2,9 22,2"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="input-footer">
+                        <span>Powered by self-hosted LLM • Press Enter to send</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Knowledge View -->
+            <div class="knowledge-view hidden" id="knowledge-view" style="display: none;">
+                <div class="knowledge-header">
+                    <h2>Knowledge Base</h2>
+                    <p>Add information to help Jarvis provide better, contextual responses.</p>
+                </div>
+                
+                <div class="knowledge-form">
+                    <div class="form-group">
+                        <label>Add Knowledge</label>
+                        <textarea 
+                            id="knowledge-input" 
+                            placeholder="Enter information you want Jarvis to remember..."
+                            rows="5"
+                        ></textarea>
+                    </div>
+                    <button class="primary-btn" onclick="addKnowledge()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"/>
+                            <line x1="5" y1="12" x2="19" y2="12"/>
+                        </svg>
+                        Add to Knowledge Base
+                    </button>
+                </div>
+                
+                <div class="knowledge-search">
+                    <div class="form-group">
+                        <label>Search Knowledge</label>
+                        <div class="search-wrapper">
+                            <input 
+                                type="text" 
+                                id="search-input" 
+                                placeholder="Search the knowledge base..."
+                                onkeydown="if(event.key==='Enter')searchKnowledge()"
+                            >
+                            <button class="search-btn" onclick="searchKnowledge()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="11" cy="11" r="8"/>
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="search-results" id="search-results"></div>
+                </div>
+                
+                <div class="knowledge-status" id="knowledge-status"></div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="/static/script.js"></script>
+</body>
+</html>
